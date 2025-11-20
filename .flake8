@@ -1,0 +1,24 @@
+[flake8]
+max-line-length = 90
+accept-encodings = utf-8
+mypy_config = mypy.ini
+
+per-file-ignores =
+    uefi_parser/guiddb.py:E251,E501
+    uefi_parser/tpm.py:E221
+    uefi_parser/gecko.py:E221
+    uefi_parser/bgscript.py:E241
+    uefi_parser/amd.py:E221
+
+# Errors to ignore.
+ignore = CCR001,E265,E302,E305,E501,W503
+
+# CCR001 Cognitive complexity is too high (27 > 7)
+# E265 block comment should start with '# '
+# E302 expected 2 blank lines, found 1
+# E241 multiple spaces after ','
+# E202 whitespace before ')'
+# E221 multiple spaces before operator
+# E305 expected 2 blank lines after class or function definition, found 1
+# E501 line too long (91 > 90 characters)
+# W503 line break before binary operator

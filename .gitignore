@@ -1,0 +1,11 @@
+# Byte-compiled python files
+__pycache__/
+
+# Emacs autosaves.
+*~
+
+# Python Packaging
+build/
+dist/
+uefi_parser.egg-info/
+

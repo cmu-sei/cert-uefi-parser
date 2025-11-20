@@ -1,0 +1,42 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+packages = [ "uefi_parser" ]
+
+[project]
+name = "uefi_parser"
+version = "1.0"
+authors = [
+  { name = "Cory Cohen", email = "cfc@cert.org"}, 
+  { name = "Michael Duggan", email = "mwd@cert.org"}
+]
+description = "Various data structures and parsing tools for UEFI firmware."
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+  "typing_extensions",
+  "construct>=2.10.70",
+  "pefile",
+  "PySide6",
+  "asn1crypto",
+  "uswid",
+  "uefi_support",
+]
+license-files = [ "LICENSE.md" ]
+keywords = [ "security", "uefi", "firmware", "parsing", "bios" ]
+classifiers = [
+  # https://pypi.python.org/pypi?%3Aaction=list_classifiers
+  'Development Status :: 4 - Beta',
+  'Intended Audience :: System Administrators',
+  'Topic :: Security',
+  'Programming Language :: Python :: 3.10',
+]
+
+[project.urls]
+Homepage = "https://github.com/cmu-sei/cert-uefi-parser"
+Repository = "https://github.com/cmu-sei/cert-uefi-parser"
+
+[project.scripts]
+cert-uefi-parser = "uefi_parser.cmds:cert_uefi_parser"
