@@ -32,8 +32,8 @@ You may activate the cert-venv if you choose.
 Then install the packages directly from GitHub:
 
 ```
-  $ ../cert-venv/bin/pip install git+https://github.com/cmu-sei/cert-uefi-support
-  $ ../cert-venv/bin/pip install git+https://github.com/cmu-sei/cert-uefi-parser
+  $ ./cert-venv/bin/pip install git+https://github.com/cmu-sei/cert-uefi-support
+  $ ./cert-venv/bin/pip install git+https://github.com/cmu-sei/cert-uefi-parser
 ```
 
 Usage
