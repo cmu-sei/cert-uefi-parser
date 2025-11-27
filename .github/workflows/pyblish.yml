@@ -61,7 +61,7 @@ jobs:
           path: dist/
 
       - name: Publish to PyPI via OIDC
-        uses: pypa/gh-action-pypi-publish@v1.10.0
+        uses: pypa/gh-action-pypi-publish@release/v1
         with:
           verbose: true
           skip-existing: false
