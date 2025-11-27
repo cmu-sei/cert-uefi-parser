@@ -1,48 +1,71 @@
 CERT UEFI Parser
 ================
 
-The CERT UEFI Parser is a tool for inspecting firmware ROM images,
-installers, and related files, especially those related to UEFI.  It
-pulls together information from the UEFI standards and a variety of
-independent research (e.g. Igor Skochinsky's Intel ME work).
+The CERT UEFI Parser is a Python-based tool for inspecting firmware ROM
+images, installers, and related files, especially those associated with UEFI.
+It combines information from the UEFI specifications with insights from
+independent firmware research (for example, Igor Skochinsky’s Intel ME work).
 
-Written in Python version 3 and using the Construct module, it's less
-rigid than the EDK2 UEFI reference implementation and more easily
-extended to support proprietary and experimental data structure
-parsing.  CERT UEFI Parser is intended to parse all related data
-formats including standard file formats commonly found inside UEFI
-ROMs such as Portable Executables (PEs) and images. CERT UEFI Parser
-is free from NDAs or other restrictions on proprietary formats, having
-been reverse engineered from widely available public information and
-original work.
+Written for Python 3 and built on the Construct parsing framework, the parser
+is more flexible than the EDK2 reference implementation and is easier to extend
+to proprietary or experimental data structures.  CERT UEFI Parser aims to
+support all data formats commonly found inside UEFI ROMs, including Portable
+Executables (PEs) and image structures.  The project is free of NDAs or other
+restrictions; all proprietary formats have been reverse engineered from public
+information and original analysis.
 
 Installation
 ------------
 
-To install CERT UEFI Parser, you'll need a Python virtual environment
-containing not only this repository, but also a related support
-library, CERT UEFI support.   The commands to install everything are:
+The parser depends on the **cert-uefi-support** package, which provides
+lower-level decompression and binary utilities.  Both packages are now
+available on PyPI.
+
+Basic installation:
 
 ```
   $ python3 -m venv cert-venv
+  $ source cert-venv/bin/activate
+  $ pip install cert-uefi-support cert-uefi-parser
 ```
 
-You may activate the cert-venv if you choose.
+### Optional GUI Support (Qt)
 
-Then install the packages directly from GitHub:
+GUI support is optional and provided via the PySide6 package.  It is a
+large dependency, so it is not installed by default.  To install with the GUI
+extras:
 
 ```
-  $ ./cert-venv/bin/pip install git+https://github.com/cmu-sei/cert-uefi-support
-  $ ./cert-venv/bin/pip install git+https://github.com/cmu-sei/cert-uefi-parser
+  $ pip install cert-uefi-support cert-uefi-parser[qt]
 ```
+
+
+### Installing from the Official Git Repositories
+
+
+```
+  $ python3 -m venv cert-venv
+  $ git clone https://code.sei.cmu.edu/bitbucket/scm/eca/cert-uefi-support.git
+  $ cd cert-uefi-support
+  $ git submodule update --init --recursive
+  $ ../cert-venv/bin/pip install .
+  $ cd ..
+  
+  $ git clone https://code.sei.cmu.edu/bitbucket/scm/eca/cert-uefi-parser.git
+  $ cd cert-uefi-parser
+  $ ../cert-venv/bin/pip install .
+  $ cd ..
+```
+
 
 Usage
 -----
 
-CERT UEFI Parser has four primary modes: a GUI display, an ASCII text
-display (including ANSI color codes by default), a JSON format, and a
-filtered JSON format containing fields that might be interest for
-generating an SBOM.
+CERT UEFI Parser provides four primary output modes: a graphical interface, an
+ASCII text display (with ANSI color output enabled by default), a full JSON
+representation, and a filtered JSON representation containing fields that are
+useful for generating a Software Bill of Materials (SBOM).
+
 
 ```
   $ ./cert-venv/bin/cert-uefi-parser --gui {firmware-related-file}
@@ -51,9 +74,10 @@ generating an SBOM.
   $ ./cert-venv/bin/cert-uefi-parser --sbom {firmware-related-file} >output.json
 ```
 
-For sample input files, we recommend downloading the BIOS updater
-executable that your hardware vendor ships through their normal
-support channels.  While not all models are guaranteed to be
-supported, many of the popular vendors are, and examining a ROM update
-is a good place to get started exploring on exploring the capabilities
-of CERT UEFI Parser.
+
+Sample firmware files can typically be obtained by downloading the BIOS or
+UEFI update tools from your system vendor’s support site.  While not all
+models are guaranteed to be fully supported, many common vendor formats parse
+successfully, and examining these update files is a good way to begin exploring
+the parser’s capabilities.
+

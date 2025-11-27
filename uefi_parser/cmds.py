@@ -36,7 +36,6 @@ from typing import Optional
 from .base import FirmwareStructure
 from .auto import AutoObject, BruteForceFinder
 from .utils import red, blue
-from .gui import run_gui
 
 # Hacky solution for --no-color option, using a global.
 nocolor = False
@@ -79,6 +78,12 @@ def process_file(filename: str, args: argparse.Namespace) -> bool:
         elif args.sbom:
             emit(json.dumps(result.sbom(), indent=2))
         elif args.gui:
+            try:
+                from .gui import run_gui
+            except ImportError:
+                print("GUI mode requires the optional 'qt' dependency:")
+                print("    pip install uefi_parser[qt]")
+                return False
             run_gui(result, args)
         else:
             result.report()

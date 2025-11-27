@@ -1,42 +1,57 @@
 [build-system]
-requires = ["setuptools"]
+requires = ["setuptools>=61.0", "setuptools_scm[toml]>=6.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [tool.setuptools]
 packages = [ "uefi_parser" ]
 
 [project]
-name = "uefi_parser"
-version = "1.0"
-authors = [
-  { name = "Cory Cohen", email = "cfc@cert.org"}, 
-  { name = "Michael Duggan", email = "mwd@cert.org"}
-]
+name = "cert-uefi-parser"
+authors = [{ name = "CERT Threat Analysis Team", email = "cert@cert.org"}]
 description = "Various data structures and parsing tools for UEFI firmware."
-readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
   "typing_extensions",
   "construct>=2.10.70",
   "pefile",
-  "PySide6",
   "asn1crypto",
   "uswid",
-  "uefi_support",
+  "cert-uefi-support",
 ]
+readme = {file="README.md", content-type="text/markdown"}
+dynamic = ["version"]
+keywords = ["uefi", "firmware", "uefi-parser", "support-tools", "security", "bios"]
+license = { file = "LICENSE.md", content-type="text/markdown"}
 license-files = [ "LICENSE.md" ]
-keywords = [ "security", "uefi", "firmware", "parsing", "bios" ]
 classifiers = [
-  # https://pypi.python.org/pypi?%3Aaction=list_classifiers
   'Development Status :: 4 - Beta',
   'Intended Audience :: System Administrators',
   'Topic :: Security',
-  'Programming Language :: Python :: 3.10',
+  'Programming Language :: Python :: 3',
+  'License :: Other/Proprietary License',
+  'Topic :: Security',
+  'Topic :: System :: Hardware'
 ]
+
+[project.optional-dependencies]
+qt = [
+  "PySide6"
+]
+
 
 [project.urls]
 Homepage = "https://github.com/cmu-sei/cert-uefi-parser"
 Repository = "https://github.com/cmu-sei/cert-uefi-parser"
+Issues = "https://github.com/cmu-sei/cert-uefi-parser/issues"
+
 
 [project.scripts]
 cert-uefi-parser = "uefi_parser.cmds:cert_uefi_parser"
+
+[tool.setuptools.package-dir]
+uefi_parser = "uefi_parser"
+
+#version control using git tags
+[tool.setuptools_scm]
+version_scheme = "guess-next-dev"
+local_scheme = "node-and-date"
