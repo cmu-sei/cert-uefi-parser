@@ -45,13 +45,13 @@ extras:
 
 ```
   $ python3 -m venv cert-venv
-  $ git clone https://code.sei.cmu.edu/bitbucket/scm/eca/cert-uefi-support.git
+  $ git clone https://github.com/cmu-sei/cert-uefi-support.git
   $ cd cert-uefi-support
   $ git submodule update --init --recursive
   $ ../cert-venv/bin/pip install .
   $ cd ..
   
-  $ git clone https://code.sei.cmu.edu/bitbucket/scm/eca/cert-uefi-parser.git
+  $ git clone https://github.com/cmu-sei/cert-uefi-parser.git
   $ cd cert-uefi-parser
   $ ../cert-venv/bin/pip install .
   $ cd ..
