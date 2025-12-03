@@ -79,8 +79,6 @@ def process_file(filename: str, args: argparse.Namespace) -> bool:
         elif args.sbom:
             emit(json.dumps(result.sbom(), indent=2))
         elif args.gui:
-            if not ensure_gui_environment(True):
-                return False
             from .gui import run_gui
             run_gui(result, args)
         else:
@@ -163,6 +161,11 @@ def cert_uefi_parser() -> None:
     # Unless we're generating JSON, which always has no color.
     if args.json or args.sbom:
         nocolor = True
+
+    # If we're going to open the GUI the environment needs to be correct.
+    # Do this check before parsing the file to avoid wasted effort.
+    if args.gui and not ensure_gui_environment(argparser):
+        sys.exit(3)
 
     try:
         succeeded = process_file(args.file, args)
