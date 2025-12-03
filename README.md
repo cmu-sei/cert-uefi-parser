@@ -21,12 +21,11 @@ The parser depends on the **cert-uefi-support** package, which provides
 lower-level decompression and binary utilities.  Both packages are now
 available on PyPI.
 
-Basic installation:
+### Basic installation:
 
 ```
   $ python3 -m venv cert-venv
-  $ source cert-venv/bin/activate
-  $ pip install cert-uefi-support cert-uefi-parser
+  $ ./cert-venv/bin/pip install cert-uefi-support cert-uefi-parser
 ```
 
 ### Optional GUI Support (Qt)
@@ -36,27 +35,18 @@ large dependency, so it is not installed by default.  To install with the GUI
 extras:
 
 ```
-  $ pip install cert-uefi-support cert-uefi-parser[qt]
+  $ python3 -m venv cert-venv
+  $ ./cert-venv/bin/pip install cert-uefi-support cert-uefi-parser[qt]
 ```
-
 
 ### Installing from the Official Git Repositories
 
-
 ```
   $ python3 -m venv cert-venv
-  $ git clone https://github.com/cmu-sei/cert-uefi-support.git
-  $ cd cert-uefi-support
-  $ git submodule update --init --recursive
-  $ ../cert-venv/bin/pip install .
-  $ cd ..
-  
-  $ git clone https://github.com/cmu-sei/cert-uefi-parser.git
-  $ cd cert-uefi-parser
-  $ ../cert-venv/bin/pip install .
-  $ cd ..
+  $ ./cert-venv/bin/pip install \
+    git+https://github.com/cmu-sei/cert-uefi-support \
+    "cert-uefi-parser[qt] @ git+https://github.com/cmu-sei/cert-uefi-parser.git"
 ```
-
 
 Usage
 -----
@@ -66,14 +56,12 @@ ASCII text display (with ANSI color output enabled by default), a full JSON
 representation, and a filtered JSON representation containing fields that are
 useful for generating a Software Bill of Materials (SBOM).
 
-
 ```
   $ ./cert-venv/bin/cert-uefi-parser --gui {firmware-related-file}
   $ ./cert-venv/bin/cert-uefi-parser --text {firmware-related-file} | less
   $ ./cert-venv/bin/cert-uefi-parser --json {firmware-related-file} >output.json
   $ ./cert-venv/bin/cert-uefi-parser --sbom {firmware-related-file} >output.json
 ```
-
 
 Sample firmware files can typically be obtained by downloading the BIOS or
 UEFI update tools from your system vendor’s support site.  While not all
