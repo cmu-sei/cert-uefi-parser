@@ -41,6 +41,7 @@ def _check_linux_graphics():
             "If running over SSH, use:  ssh -X  or  ssh -Y\n"
             "If running on a server, you may need:  xvfb-run python yourapp.py\n"
         )
+        return False
 
     # 2. Check for required XCB libraries used by Qt
     required_xcb = [
@@ -60,7 +61,8 @@ def _check_linux_graphics():
             "libxcb-keysyms1 libxcb-shape0 libxcb-xinerama0 "
             "libxcb-render-util0\n"
         )
-
+        return False
+    return True
 
 # ----------------------------
 # Main cross-platform entry point
@@ -78,7 +80,7 @@ def ensure_gui_environment(require_gui: bool = False):
 
     # If GUI is not required, we skip everything.
     if not require_gui:
-        return
+        return False
 
     # Check if PySide6 is installed at all.
     if not _pyside6_installed():
@@ -87,19 +89,19 @@ def ensure_gui_environment(require_gui: bool = False):
             "Install with:\n"
             "    pip install cert-uefi-parser[qt]\n"
         )
+        return False
 
     # Per-OS behavior
     if sys.platform.startswith("win"):
         # Windows always works — Qt uses native backend.
-        return
+        return True
 
     if sys.platform == "darwin":
         # macOS also always works — uses Cocoa backend.
-        return
+        return True
 
-    if sys.platform.startswith("linux"):
-        _check_linux_graphics()
-        return
+    if sys.platform.startswith("linux") and _check_linux_graphics():
+        return True
 
     # Unsupported OS
     print(f"Unsupported OS for GUI: {sys.platform}")
