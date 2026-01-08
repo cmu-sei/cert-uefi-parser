@@ -62,11 +62,13 @@ class X509_DER(FirmwareStructure):
         # Ensure that fields have values.
         self.keyid = None
         self.subject = None
+
         # Extract fields from the X509 certificate if asn1crypto is installed.
         try:
             cert = Certificate.load(self.x509_der_bytes)
             if cert.key_identifier is not None:
                 self.keyid = cert.key_identifier.hex()
+            if cert.subject is not None:
                 self.subject = cert.subject.human_friendly
         except ValueError as e:
             self.error("X509 certificate parsing error at 0x%x, der=%s" % (
@@ -75,10 +77,17 @@ class X509_DER(FirmwareStructure):
 
         # For debugging, write the DER certificate out to a file.
         if False:
-            filename = "key_0x%x.der" % (self._data_offset + 44)
+            filename = "key_0x%x.der" % (self._data_offset)
             fh = open(filename, "wb")
             fh.write(self.x509_der_bytes)
             fh.close()
+
+    def instance_name(self) -> str:
+        if self.subject is not None:
+            return self.subject
+        if self.keyid is not None:
+            return self.keyid
+        return ""
 
 # ----------------------------------------------------------------------------------------
 class X509_Signature(FakeFirmwareStructure):
@@ -106,12 +115,19 @@ class X509_Signature(FakeFirmwareStructure):
         sid = signer["sid"].chosen
         # There's a second alternative call Subject key indentifier that's not handled.
         if isinstance(sid, IssuerAndSerialNumber):
-            self.issuer = sid["issuer"].human_friendly
+            self.issuer = str(sid["issuer"].human_friendly)
             self.serial = int(sid["serial_number"])
 
         #self.issuer = .issuer"]
         self._sigbytes = bytes(signer["signature"])
         self.siglen = len(self._sigbytes)
+
+    def instance_name(self) -> str:
+        if self.issuer is not None:
+            return self.issuer
+        if self.serial is not None:
+            return str(self.serial)
+        return ""
 
 # ----------------------------------------------------------------------------------------
 class X509_SignedData(FirmwareStructure):

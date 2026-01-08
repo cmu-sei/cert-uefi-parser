@@ -2153,7 +2153,6 @@ class MFSFile(FirmwareStructure, MFSModeBits):
         return mb
 
     def analyze(self) -> None:
-        global mfs_full_path
         root = ''
         if len(mfs_full_path) > 0:
             root = '/' + '/'.join(mfs_full_path)

@@ -305,8 +305,15 @@ class QHexView(QtWidgets.QAbstractScrollArea):
 
         self.fixed_font = QtGui.QFontDatabase.systemFont(QtGui.QFontDatabase.SystemFont.FixedFont)
         if self.fixed_font.styleHint() != QtGui.QFont.StyleHint.TypeWriter:
-            self.fixed_font.setFamily("Monospace")  # Force Monospaced font
+            # You're supposed to be able to say "Monospace" to have the operating system
+            # pick an availabel monospaced font, but MacOS complains about this, so we
+            # have to choose a specific font face instead.
+            if sys.platform == "darwin":
+                self.fixed_font.setFamily("Menlo")
+            else:
+                self.fixed_font.setFamily("Monospace")
             self.fixed_font.setStyleHint(QtGui.QFont.StyleHint.TypeWriter)
+
         self.font_metrics = QtGui.QFontMetricsF(self.fixed_font)
         if doc is None:
             doc = b''

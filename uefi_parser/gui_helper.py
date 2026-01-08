@@ -96,7 +96,7 @@ def ensure_gui_environment(argparser: ArgumentParser) -> bool:
     Verifies that the runtime environment supports GUI operations.
     """
     # Check if PySide6 is installed at all.
-    if True or not _pyside6_installed():
+    if not _pyside6_installed():
         argparser.error(
             "GUI support requested but PySide6 is not installed.\n\n"
             "Install with:  pip install cert-uefi-parser[qt]")

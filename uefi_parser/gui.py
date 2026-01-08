@@ -53,7 +53,7 @@ from PySide6.QtWidgets import (
     QWidget, QDialogButtonBox, QPushButton, QCompleter)
 from PySide6.QtGui import (
     QClipboard, QAction, QColor, QKeySequence, QValidator, QImage, QPixmap, QIcon,
-    QCloseEvent)
+    QCloseEvent, QPalette)
 
 from .qhexview import QHexView, QHexDocument, QHexMetadata
 from .base import FirmwareStructure, UUIDAdapter
@@ -63,6 +63,8 @@ from .auto import AutoObject
 from .icon import icon_data
 
 log = logging.getLogger("cert-uefi-parser")
+
+ColorRole = QPalette.ColorRole
 
 # ========================================================================================
 
@@ -1033,8 +1035,8 @@ class Gui(QApplication):
             if memory is not self.memory:
                 self.memory = memory
                 self.hexview.setDocument(QHexDocument(memory, self.hexview))
-            self.treeselection = QHexMetadata(offset, offset + length,
-                                              background=QColor("cyan"))
+            color = self.palette().brush(ColorRole.Highlight).color()
+            self.treeselection = QHexMetadata(offset, offset + length, background=color)
             self.hexview.setMetadata(self.treeselection)
             if not processing:
                 self.hexview.move_to_region(offset, offset + length)
@@ -1053,8 +1055,8 @@ class Gui(QApplication):
                 return
             start = offsets[0]
             end = start + (offsets[1] - offsets[0])
-            self.tableselection = QHexMetadata(start, end,
-                                               background=QColor("red"))
+            #color = self.palette().brush(QPalette.Link).color()
+            self.tableselection = QHexMetadata(start, end, background=QColor("orange"))
             self.hexview.setMetadata(self.tableselection)
             if not processing:
                 self.hexview.move_to_region(start, end)
